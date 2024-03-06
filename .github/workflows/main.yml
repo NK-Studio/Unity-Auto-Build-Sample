@@ -1,100 +1,42 @@
-name: ✨Automated Build✨
+name: Automated Build
 
-on: 
-  push:
-    branches: [ master ]
-  workflow_dispatch: {}
-
-jobs:
-  buildWindows:
-    name: 💻Windows
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
+on:
+  push: # Master 브랜치에 Push가 되면 빌드가 되도록 동작시킵니다.
+    branches: [ main ]
     
+jobs:
+  build:
+    name: Windows(Mono) Build 🌈
+    runs-on: ubuntu-latest
+    
+    steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # Cache
+      # Cache (캐시파일을 생성하여 다음 빌드시 더 빠르게 빌드를 할 수 있도록 해줍니다.)
       - uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
-            
-      - uses: game-ci/unity-builder@v4
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
+          # 빌드 타겟 -> 윈도우 StandaloneWindows64, 맥 StandaloneOSX, 안드로이드 Android, 아이폰 iOS
           targetPlatform: StandaloneWindows64
 
-      # Check for dirty branch
-      - name: Check diff if dirty-branch error caused
-        if: failure()
-        run: |
-          git diff --name-only > modified_files.txt
-          echo "List of modified files:"
-          cat modified_files.txt
-          while read -r line; do
-            echo "Changes in $line:"
-            git diff "$line"
-          done < modified_files.txt
-
       # Output
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
-          name: build-StandaloneWindows64
-          path: build/StandaloneWindows64
-          
-  buildMacOS:
-    name: 💻macOS
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      # Cache
-      - uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-            
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: StandaloneOSX
-
-      # Check for dirty branch
-      - name: Check diff if dirty-branch error caused
-        if: failure()
-        run: |
-          git diff --name-only > modified_files.txt
-          echo "List of modified files:"
-          cat modified_files.txt
-          while read -r line; do
-            echo "Changes in $line:"
-            git diff "$line"
-          done < modified_files.txt
-
-      # Output
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-StandaloneOSX
-          path: build/StandaloneOSX
+          name: Windows Build
+          path: build
