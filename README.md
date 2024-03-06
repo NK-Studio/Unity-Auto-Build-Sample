@@ -1,2 +1,2 @@
 # Unity-Auto-Build-Sample
-유니티 자동화 빌드 테스트
+대충.. 아무거나 프로젝트 올려봄. (HDRP 샘플)
