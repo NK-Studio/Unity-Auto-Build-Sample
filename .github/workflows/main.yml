@@ -9,7 +9,12 @@ jobs:
     name: 💻 Windows-64 Bit
     runs-on: ubuntu-latest # Mono 빌드, 빌드 속도가 매우 빠릅니다.
     # runs-on: windows-latest # IL2CPP 빌드, 빌드 속도가 느리지만 보안에 강합니다.
-  
+
+    strategy:
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+
     steps:
       # Checkout
       - name: Checkout repository
@@ -21,9 +26,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
 
       # Build
       - name: Build project
@@ -33,7 +37,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
 
       # Output
       - uses: actions/upload-artifact@v4
@@ -45,6 +49,11 @@ jobs:
     name: 💻 MacOS
     runs-on: ubuntu-latest # Mono 빌드, 빌드 속도가 매우 빠릅니다.
     # runs-on: macos-latest # IL2CPP 빌드, 빌드 속도가 느리지만 보안에 강합니다.
+
+    strategy:
+      matrix:
+        targetPlatform:
+          - StandaloneOSX # Build a MacOS
     
     steps:
       # Checkout
@@ -57,9 +66,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
 
       # Build
       - name: Build project
@@ -69,7 +77,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneOSX
+          targetPlatform: ${{ matrix.targetPlatform }}
 
       # Output
       - uses: actions/upload-artifact@v4
