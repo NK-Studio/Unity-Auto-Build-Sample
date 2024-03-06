@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        projectPath:
-          - Unity-Auto-Build-Sample/
     steps:
     
       # Checkout
@@ -36,7 +33,6 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ matrix.projectPath }}
           targetPlatform: StandaloneWindows64
 
       # Check for dirty branch
@@ -62,9 +58,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        projectPath:
-          - Unity-Auto-Build-Sample/
     steps:
       # Checkout
       - name: Checkout repository
@@ -86,7 +79,6 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ matrix.projectPath }}
           targetPlatform: StandaloneOSX
 
       # Check for dirty branch
