@@ -7,8 +7,8 @@ on:
 jobs:
   buildWindows:
     name: 💻 Windows-64 Bit
-    runs-on: ubuntu-latest
-    # runs-on: windows-latest # 윈도우 IL2CPP로 빌드할 때 필수입니다.
+    # runs-on: ubuntu-latest
+    runs-on: windows-latest # 윈도우 IL2CPP로 빌드할 때 필수입니다.
   
     steps:
       # Checkout
@@ -43,8 +43,8 @@ jobs:
  
   buildMacOS:
     name: 💻 MacOS
-    runs-on: ubuntu-latest
-    # runs-on: macos-latest # MacOS를 사용합니다.
+    # runs-on: ubuntu-latest
+    runs-on: macos-latest # MacOS를 사용합니다.
     
     steps:
       # Checkout
