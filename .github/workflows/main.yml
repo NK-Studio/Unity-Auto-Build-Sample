@@ -1,22 +1,18 @@
 name: Temporary Action for manual activation
 
 on:
-  push: # Master 브랜치에 Push가 되면 빌드가 되도록 동작시킵니다.
-    branches: [ master ]
+  workflow_dispatch: {}
     
 jobs:
-  build:
+  activation:
     name: Manual activation
     runs-on: ubuntu-latest
     
     steps:
-      # Build
-      - name: Build project
+      # activation
+      - name: Activation project
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          # 빌드 타겟 -> 윈도우 StandaloneWindows64, 맥 StandaloneOSX, 안드로이드 Android, 아이폰 iOS
-          targetPlatform: StandaloneWindows64
