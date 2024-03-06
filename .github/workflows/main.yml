@@ -42,7 +42,7 @@ jobs:
  
   buildMacOS:
     name: 💻 MacOS
-    runs-on: ubuntu-latest # 우분투를 사용합니다.
+    runs-on: macos-latest # 우분투를 사용합니다.
     
     steps:
       # Checkout
