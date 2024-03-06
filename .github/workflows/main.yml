@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - Unity-Auto-Build-Sample~/
+          - Unity-Auto-Build-Sample/
     steps:
     
       # Checkout
@@ -64,7 +64,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - Unity-Auto-Build-Sample~/
+          - Unity-Auto-Build-Sample/
     steps:
       # Checkout
       - name: Checkout repository
