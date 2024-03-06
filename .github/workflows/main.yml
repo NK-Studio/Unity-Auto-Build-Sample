@@ -6,37 +6,13 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  testJob:
-    name: 🧪Test
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        testMode:
-          - EditMode
-          - PlayMode
-    steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      # Cache
-      - uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
   buildWindows:
-    needs: testJob
     name: 💻Windows
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
+    
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -57,7 +33,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          customParameters: -BuildOnCloud
+          projectPath: Unity-Auto-Build-Sample/
           targetPlatform: StandaloneWindows64
 
       # Check for dirty branch
@@ -79,7 +55,6 @@ jobs:
           path: build/StandaloneWindows64
           
   buildMacOS:
-    needs: testJob
     name: 💻macOS
     runs-on: ubuntu-latest
     strategy:
@@ -105,7 +80,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          customParameters: -BuildOnCloud
+          projectPath: Unity-Auto-Build-Sample/
           targetPlatform: StandaloneOSX
 
       # Check for dirty branch
