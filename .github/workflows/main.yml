@@ -41,7 +41,7 @@ jobs:
           path: build
  
   buildMacOS:
-    name: 💻 MacOS(Mono)
+    name: 💻 MacOS (Mono)
     runs-on: ubuntu-latest
     
     steps:
